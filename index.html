@@ -88,6 +88,13 @@
       return null;
     }
 
+    function returnChampionNameById(idNumber) {
+        async function demo() {
+          const name = await getChampionNameById(idNumber);
+        }
+        return name
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const lookupBtn = document.getElementById('lookup-btn');
         const summonerNameInput = document.getElementById('summoner-name');
@@ -191,9 +198,13 @@
             const championsHtml = data.topChampions.map(champ => `
                 <div class="champion-card">
                     <p><strong>Champion ID:</strong> ${champ.championId}</p>
-                    <p><strong>Champion Name:</strong> ${getChampionNameById(champ.championId)}</p>
+                    <p><strong>Champion Name:</strong> ${returnChampionNameById(idNumber)}</p>
                     <p><strong>Mastery Level:</strong> ${champ.championLevel}</p>
                     <p><strong>Mastery Points:</strong> ${champ.championPoints.toLocaleString()}</p>
+                    <p><strong>Attack:</strong> ${champ.championPoints.toLocaleString()}</p>
+                    <p><strong>Defense:</strong> ${champ.championPoints.toLocaleString()}</p>
+                    <p><strong>Magic:</strong> ${champ.championPoints.toLocaleString()}</p>
+                    <p><strong>difficulty:</strong> ${champ.championPoints.toLocaleString()}</p>
                     <p><strong>Last play time:</strong> ${farmatDate(champ.lastPlayTime)}</p>
                 </div>
             `).join('');
