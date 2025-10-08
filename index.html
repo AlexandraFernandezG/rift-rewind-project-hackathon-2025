@@ -74,6 +74,35 @@
 
     const RIOT_API_URL = 'https://sfyfgbxxhiz5bzxmfto5vy6zbu0yqstx.lambda-url.us-east-1.on.aws/'; // Replace with your Function URL
 
+
+
+
+
+    async function getChampionNameById(idNumber) {
+      // loads the JSON file
+      const response = await fetch('championship.json');
+      const championship = await response.json();
+
+      for (const champKey in championship.data) {
+        const champ = championship.data[champKey];
+        if (champ.key === String(idNumber)) {
+          return champ.name;
+        }
+      }
+      return null;
+    }
+
+    getChampionNameById(266).then(name => console.log(name));
+
+
+
+
+
+
+
+
+    
+
     document.addEventListener('DOMContentLoaded', function() {
         const lookupBtn = document.getElementById('lookup-btn');
         const summonerNameInput = document.getElementById('summoner-name');
