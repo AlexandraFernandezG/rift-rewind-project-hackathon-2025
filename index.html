@@ -71,6 +71,7 @@
     <!-- Contact form JavaScript -->
     <script>
     // League Data Lookup - Calls Riot API via Lambda
+
     const RIOT_API_URL = 'https://sfyfgbxxhiz5bzxmfto5vy6zbu0yqstx.lambda-url.us-east-1.on.aws/'; // Replace with your Function URL
     
     document.addEventListener('DOMContentLoaded', function() {
@@ -154,11 +155,26 @@
         
         // Display top champions
         if (data.topChampions && data.topChampions.length > 0) {
+            // 1. Convert the timestamp to a Date object
+            const ts = champ.lastPlayTime();          
+            const d  = new Date(ts);           
+
+            // 2. Build the string you asked for: “Jan/01/2025 01:12”
+            const monthAbbr = d.toLocaleString('en-US', { month: 'short' }); // "Jan"
+            const day       = String(d.getDate()).padStart(2, '0');          // "01"
+            const year      = d.getFullYear();                               // 2025
+            const hour      = String(d.getHours()).padStart(2, '0');          // "01"
+            const minute    = String(d.getMinutes()).padStart(2, '0');        // "12"
+
+            const dateformated = `${monthAbbr}/${day}/${year} ${hour}:${minute}`;
+            console.log('Time Formated',dateformated);
+
             const championsHtml = data.topChampions.map(champ => `
                 <div class="champion-card">
                     <p><strong>Champion ID:</strong> ${champ.championId}</p>
                     <p><strong>Mastery Level:</strong> ${champ.championLevel}</p>
                     <p><strong>Mastery Points:</strong> ${champ.championPoints.toLocaleString()}</p>
+                    <p><strong>Last play time:</strong> ${dateformated}</p>
                 </div>
             `).join('');
             
