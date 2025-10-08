@@ -221,7 +221,7 @@
             );
             // Get attack
             const attackPromises = data.topChampions.map(champ =>
-                getChampionNameById(champ.championId)   // ← returns a Promise
+                getChampionAttackById(champ.championId)   // ← returns a Promise
             );
 
             // 3️ Wait for every promise to settle
