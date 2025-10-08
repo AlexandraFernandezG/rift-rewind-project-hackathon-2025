@@ -198,7 +198,7 @@
             const championsHtml = data.topChampions.map(champ => `
                 <div class="champion-card">
                     <p><strong>Champion ID:</strong> ${champ.championId}</p>
-                    <p><strong>Champion Name:</strong> ${returnChampionNameById(idNumber)}</p>
+                    <p><strong>Champion Name:</strong> ${returnChampionNameById(champ.championId)}</p>
                     <p><strong>Mastery Level:</strong> ${champ.championLevel}</p>
                     <p><strong>Mastery Points:</strong> ${champ.championPoints.toLocaleString()}</p>
                     <p><strong>Attack:</strong> ${champ.championPoints.toLocaleString()}</p>
