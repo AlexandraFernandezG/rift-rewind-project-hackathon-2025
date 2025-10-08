@@ -241,6 +241,7 @@
             const defensePromises = data.topChampions.map(champ =>
                 getChampionDefenseById(champ.championId)   // ← returns a Promise
             );
+            
 
             // Name - Wait for every promise to settle
             const championNames = await Promise.all(namePromises);
