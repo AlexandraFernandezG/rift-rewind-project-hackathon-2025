@@ -178,38 +178,52 @@
     }
     */
     
+
+
+
+
+
+    
     async function displaySummonerData(data) {
         console.log(data);
-        const resultsDiv = document.getElementById('summoner-results');
-        const summonerInfo = document.getElementById('summoner-info');
+        const resultsDiv      = document.getElementById('summoner-results');
+        const summonerInfo    = document.getElementById('summoner-info');
         const championMastery = document.getElementById('champion-mastery');
-        
-        // Display summoner info
+
+        // ------------------------------------------------------------------
+        // Summoner info (unchanged)
         summonerInfo.innerHTML = `
             <div class="summoner-card">
                 <h5>${data.summoner.name}</h5>
                 <p>Level: ${data.summoner.level}</p>
             </div>
         `;
-        
-        // Display top champions
-        if (data.topChampions && data.topChampions.length > 0) {
-            
 
-            const championsHtml = data.topChampions.map(champ => `
+        // ------------------------------------------------------------------
+        // 2️⃣  Resolve all champion names in parallel
+        if (data.topChampions && data.topChampions.length > 0) {
+            const namePromises = data.topChampions.map(champ =>
+                getChampionNameById(champ.championId)   // ← returns a Promise
+            );
+
+            // 3️⃣  Wait for every promise to settle
+            const championNames = await Promise.all(namePromises);
+
+            // 4️⃣  Build the HTML using the resolved names
+            const championsHtml = data.topChampions.map((champ, i) => `
                 <div class="champion-card">
                     <p><strong>Champion ID:</strong> ${champ.championId}</p>
-                    <p><strong>Champion Name:</strong> ${await getChampionNameById(idNumber)}</p>
+                    <p><strong>Champion Name:</strong> ${championNames[i] ?? 'Unknown'}</p>
                     <p><strong>Mastery Level:</strong> ${champ.championLevel}</p>
                     <p><strong>Mastery Points:</strong> ${champ.championPoints.toLocaleString()}</p>
                     <p><strong>Attack:</strong> ${champ.championPoints.toLocaleString()}</p>
                     <p><strong>Defense:</strong> ${champ.championPoints.toLocaleString()}</p>
                     <p><strong>Magic:</strong> ${champ.championPoints.toLocaleString()}</p>
-                    <p><strong>difficulty:</strong> ${champ.championPoints.toLocaleString()}</p>
+                    <p><strong>Difficulty:</strong> ${champ.championPoints.toLocaleString()}</p>
                     <p><strong>Last play time:</strong> ${farmatDate(champ.lastPlayTime)}</p>
                 </div>
             `).join('');
-            
+
             championMastery.innerHTML = `
                 <h5>Top Champions</h5>
                 <div class="champions-grid">
@@ -219,10 +233,17 @@
         } else {
             championMastery.innerHTML = '<p>No champion mastery data found.</p>';
         }
-        
+
         resultsDiv.style.display = 'block';
     }
     
+
+
+
+
+
+
+
     function showMessage(text, type) {
         const messageDiv = document.getElementById('lookup-message');
         messageDiv.textContent = text;
