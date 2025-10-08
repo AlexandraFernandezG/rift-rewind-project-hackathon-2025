@@ -102,7 +102,7 @@
       return null;
     }
 
-    async function getChampionAttackById(idNumber) {
+    async function getChampionDefenseById(idNumber) {
       // loads the JSON file
       const response = await fetch('championship.json');
       const championship = await response.json();
@@ -115,6 +115,8 @@
       }
       return null;
     }
+
+
 
 
 
@@ -241,7 +243,6 @@
             const defensePromises = data.topChampions.map(champ =>
                 getChampionDefenseById(champ.championId)   // ← returns a Promise
             );
-            
 
             // Name - Wait for every promise to settle
             const championNames = await Promise.all(namePromises);
@@ -259,8 +260,8 @@
                     <p><strong>Champion Name:</strong> ${championNames[i] ?? 'Unknown'}</p>
                     <p><strong>Mastery Level:</strong> ${champ.championLevel}</p>
                     <p><strong>Mastery Points:</strong> ${champ.championPoints.toLocaleString()}</p>
-                    <p><strong>Attack:</strong> ${championAttack[i] ?? 'Unknown'}</p>
-                    <p><strong>Defense:</strong> ${championDefense[i] ?? 'Unknown'}</p>
+                    <p><strong>Attack ⚔️:</strong> ${championAttack[i] ?? 'Unknown'}</p>
+                    <p><strong>Defense 🛡️:</strong> ${championDefense[i] ?? 'Unknown'}</p>
                     <p><strong>Magic:</strong> ${champ.championPoints.toLocaleString()}</p>
                     <p><strong>Difficulty:</strong> ${champ.championPoints.toLocaleString()}</p>
                     <p><strong>Last play time:</strong> ${farmatDate(champ.lastPlayTime)}</p>
