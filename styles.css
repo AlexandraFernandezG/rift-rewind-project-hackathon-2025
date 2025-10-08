@@ -574,4 +574,30 @@ footer p {
     margin: 0;
     padding: 10px 0;
 }
+
+.tagline {
+    color: rgba(0, 0, 0, 0.85); 
+}
+
+.league-lookup p {
+    color: rgba(0, 0, 0, 0.85);  
+}
+.aws-journey p {
+    color: rgba(0, 0, 0, 0.85);  
+}
+.contact-form p {
+    color: rgba(0, 0, 0, 0.85);  
+}
+.aws-link {
+     color: #000000; 
+}
+.lookup-submit-btn {
+     color: #000000; 
+}
+.cta-button {
+     color: #000000; 
+}
+.contact-submit-btn {
+     color: #000000; 
+}
 /* END LEAGUE LOOKUP STYLES */
