@@ -73,7 +73,7 @@
     // League Data Lookup - Calls Riot API via Lambda
 
     const RIOT_API_URL = 'https://sfyfgbxxhiz5bzxmfto5vy6zbu0yqstx.lambda-url.us-east-1.on.aws/'; // Replace with your Function URL
-
+    // Promise to get Name
     async function getChampionNameById(idNumber) {
       // loads the JSON file
       const response = await fetch('championship.json');
@@ -87,7 +87,7 @@
       }
       return null;
     }
-
+    // Promise to get Attack
     async function getChampionAttackById(idNumber) {
       // loads the JSON file
       const response = await fetch('championship.json');
@@ -101,7 +101,7 @@
       }
       return null;
     }
-
+    // Promise to get Defense
     async function getChampionDefenseById(idNumber) {
       // loads the JSON file
       const response = await fetch('championship.json');
@@ -115,10 +115,20 @@
       }
       return null;
     }
+    // Promise to get Difficulty
+    async function getChampionDifficultyById(idNumber) {
+      // loads the JSON file
+      const response = await fetch('championship.json');
+      const championship = await response.json();
 
-
-
-
+      for (const champKey in championship.data) {
+        const champ = championship.data[champKey];
+        if (champ.key === String(idNumber)) {
+          return champ.info.difficulty;
+        }
+      }
+      return null;
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
         const lookupBtn = document.getElementById('lookup-btn');
@@ -243,6 +253,10 @@
             const defensePromises = data.topChampions.map(champ =>
                 getChampionDefenseById(champ.championId)   // ← returns a Promise
             );
+            // Get difficulty
+            const difficultyPromises = data.topChampions.map(champ =>
+                getChampionDifficultyById(champ.championId)   // ← returns a Promise
+            );
 
             // Name - Wait for every promise to settle
             const championNames = await Promise.all(namePromises);
@@ -250,8 +264,11 @@
             // Attack - Wait for every promise to settle (attack)
             const championAttack = await Promise.all(attackPromises);
 
-            // Attack - Wait for every promise to settle (attack)
+            // Defense - Wait for every promise to settle (attack)
             const championDefense = await Promise.all(defensePromises);
+
+            // Difficulty - Wait for every promise to settle (attack)
+            const championDifficulty = await Promise.all(difficultyPromises);
 
             // 4️ Build the HTML using the resolved names
             const championsHtml = data.topChampions.map((champ, i) => `
@@ -262,8 +279,7 @@
                     <p><strong>Mastery Points:</strong> ${champ.championPoints.toLocaleString()}</p>
                     <p><strong>Attack ⚔️:</strong> ${championAttack[i] ?? 'Unknown'}</p>
                     <p><strong>Defense 🛡️:</strong> ${championDefense[i] ?? 'Unknown'}</p>
-                    <p><strong>Magic:</strong> ${champ.championPoints.toLocaleString()}</p>
-                    <p><strong>Difficulty:</strong> ${champ.championPoints.toLocaleString()}</p>
+                    <p><strong>Difficulty:</strong> ${difficultyPromises[i] ?? 'Unknown'}</p>
                     <p><strong>Last play time:</strong> ${farmatDate(champ.lastPlayTime)}</p>
                 </div>
             `).join('');
